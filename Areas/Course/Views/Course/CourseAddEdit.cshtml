@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Course Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model StudyMaterial.Areas.Course.Models.CourseModel
+<div class="row">
+    <div class="col-md-12">
+        <h3>@TempData["CourseInsertMsg"]</h3>
+        <form method="post" asp-controller="Course" asp-action="Save" asp-area="Course">
+            @Html.HiddenFor(x => x.CourseID)
+            <div class="form-group">
+                <label>Course Name</label>
+                <input type="text" class="form-control" asp-for="CourseName" placeholder="Enter Course Name" />
+                <span asp-validation-for="CourseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Course Code</label>
+                <input type="number" class="form-control" asp-for="CourseCode" placeholder="Enter Course Code" />
+            </div>
+            <div class="form-group">
+                <label>Creation Date</label>
+                <input type="date" class="form-control" asp-for="CreationDate" />
+            </div>
+            <div class="form-group">
+                <label>Modification Date</label>
+                <input type="date" class="form-control" asp-for="ModificationDate" />
+            </div>
+            <hr />
+            <input type="submit" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

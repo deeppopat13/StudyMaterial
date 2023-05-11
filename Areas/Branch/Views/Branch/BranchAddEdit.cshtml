@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Branch Add/Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model StudyMaterial.Areas.Branch.Models.BranchModel
+<div class="row">
+    <div class="col-md-12">
+        <h3>@TempData["BranchInsertMsg"]</h3>
+        <form method="post" asp-controller="Branch" asp-action="Save" asp-area="Branch">
+            @Html.HiddenFor(x => x.BranchID);
+            <div class="form-group">
+                <label>Course Name</label>
+                <select class="form-control" asp-for="CourseID" asp-items="@(new SelectList(ViewBag.CourseList,"CourseID","CourseName"))">
+                    <option value="Select Course"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Branch Name</label>
+                <input type="text" class="form-control" asp-for="BranchName" placeholder="Enter Branch Name" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Branch Code</label>
+                <input type="text" class="form-control" asp-for="BranchCode" placeholder="Enter Branch Code" />
+            </div>
+            <div class="form-group">
+                <label>Creation Date</label>
+                <input type="date" class="form-control" asp-for="CreationDate" />
+            </div>
+            <div class="form-group">
+                <label>Modification Date</label>
+                <input type="date" class="form-control" asp-for="ModificationDate" />
+            </div>
+
+            <input type="submit" value="submit" class="btn btn-success" />
+        </form>
+    </div>
+</div>
+@section Scripts
+    {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

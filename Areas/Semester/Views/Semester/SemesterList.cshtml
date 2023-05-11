@@ -1,0 +1,87 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Data
+@model DataTable
+
+<h3>Semester List</h3>
+<a asp-controller="Semester" asp-action="Add" asp-area="Semester">Add Semester</a>
+<div class="pull-right">
+    <div id="sample_1_filter" class="dataTables_filter">
+        <label>Search&nbsp;<input type="text" class="form-control input-sm input-small input-inline" placeholder="" id="sample_1" aria-controls="sample_1" /></label>
+    </div>
+
+</div>
+<form method="post" asp-controller="Semester" asp-action="Filter" asp-area="Semester">
+    <div class="row mt-5">
+       
+        <div class="col">
+            <input type="text" name="Semester" class="form-control" placeholder="Semester" />
+        </div>
+        <div class="col-2">
+            <input type="submit" class="form-control btn btn-primary" value="Search" />
+        </div>
+        <div class="col-2">
+            <input type="reset" class="form-control btn btn-secondary" value="Clear" />
+        </div>
+    </div>
+</form>
+<table class="table table-responsive table-sm">
+    <thead>
+        <tr>
+            <th>CourseName</th>
+            <th>BranchName</th>
+            <th>Semester</th>
+            <th>CreationDate</th>
+            <th>ModificationDate</th>
+            <td>Actions</td>
+        </tr>
+    </thead>
+    <tbody id="sample_2">
+        @foreach (DataRow dr in Model.Rows)
+        {
+            <tr>
+                <td>@dr["CourseName"]</td>
+                <td>@dr["BranchName"]</td>
+                <td>@dr["Semester"]</td>
+                <td>@Convert.ToDateTime(dr["CreationDate"])</td>
+                <td>@Convert.ToDateTime(dr["ModificationDate"])</td>
+                <td style="display:flex;flex-direction:row">
+                    <form method="post" asp-controller="Semester" asp-action="Add" asp-area="Semester">
+                        <input type="hidden" name="SemesterID" value="@Convert.ToInt32(dr["SemesterID"])">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-pen"></i></button>
+                    </form>
+                    <form method="post" asp-controller="Semester" asp-action="Delete" asp-area="Semester" onsubmit="return fun1();">
+                        <input type="hidden" name="SemesterID" value="@Convert.ToInt32(dr["SemesterID"])">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#sample_1").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#sample_2 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+
+            });
+        });
+        function fun1() {
+            if (confirm("Are you sure you want to delete")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}
